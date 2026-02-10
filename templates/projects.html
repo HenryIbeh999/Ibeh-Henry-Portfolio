@@ -1,0 +1,117 @@
+{% include 'header.html' %}
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container-fluid">
+        <div class="row align-items-center min-vh-100">
+            <div class="col-lg-8 ps-5">
+                <h1 class="hero-title mb-4">My Projects</h1>
+                <p class="hero-subtitle mb-4">
+                    A collection of my work showcasing my passion for building scalable applications, 
+                    solving complex problems, and exploring new technologies.
+                </p>
+                <p class="hero-subtitle" style="font-size: 0.95rem; color: var(--color-text-secondary);">
+                    From web applications to backend systems, each project represents my commitment 
+                    to clean code, best practices, and continuous learning.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Projects Grid Section -->
+<section class="projects-section">
+    <div class="container-fluid px-5">
+        <div class="row mb-5">
+            <div class="col-12">
+                <h2 class="section-title">Featured Projects</h2>
+                <div class="title-underline"></div>
+            </div>
+        </div>
+
+        <!-- Project Cards Grid -->
+        <div class="row g-4">
+            {% for project in projects %}
+            <div class="col-lg-4 col-md-6">
+                <div class="project-card">
+                    <!-- Image Carousel -->
+                    <div class="carousel-container">
+                        {% if project.thumbnail and project.thumbnail|length > 0 %}
+                            <div class="carousel-wrapper">
+                                {% for image in project.thumbnail %}
+                                <div class="carousel-item" data-slide="{% if loop.first %}0{% else %}{{ loop.index0 }}{% endif %}">
+                                    <img src="{{ image.url }}" alt="Project image" class="carousel-image">
+                                </div>
+                                {% endfor %}
+                                
+                                <!-- Navigation Arrows -->
+                                <button class="carousel-arrow carousel-prev" aria-label="Previous image">
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <button class="carousel-arrow carousel-next" aria-label="Next image">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                            <!-- Carousel Indicators -->
+                            <div class="carousel-indicators">
+                                {% for image in project.thumbnail %}
+                                <button class="carousel-dot {% if loop.first %}active{% endif %}" data-index="{{ loop.index0 }}" aria-label="Go to image {{ loop.index }}"></button>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="project-image-placeholder">
+                                <i class="fas fa-code"></i>
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="project-content">
+                        <h3 class="project-title">{{project.title}}</h3>
+                        <p class="project-description">
+                            {{project.description[0]["children"][0]["text"]}}
+                        </p>
+                        <div class="project-tech-stack">
+                            {% for item in project.tech_stack["stack"] %}
+                            <span class="tech-badge">{{item}}</span>
+                            {% endfor %}
+                        </div>
+                        <div class="project-meta">
+                            <span class="project-date">
+                                <i class="fas fa-calendar-alt"></i> {{project.data_added}}
+                            </span>
+                        </div>
+                        <a href="https://github.com/HenryIbeh999/Life-of-Py" class="project-link">
+                            View Project <i class="fas fa-arrow-right ms-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="container-fluid px-5">
+        <div class="row">
+            <div class="col-lg-8">
+                <h2 class="cta-title">Interested in working together?</h2>
+                <p class="cta-subtitle">Let's connect and discuss how we can collaborate on your next project.</p>
+            </div>
+            <div class="col-lg-4 d-flex align-items-center justify-content-lg-end">
+                <a href="{{url_for('contact')}}">
+                    <button class="btn btn-success btn-lg btn-cta">
+                    Get In Touch<span class="ms-2">›</span>
+                </button>
+                </a>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+{% include 'footer.html' %}
+
+<script src="{{ url_for('static', filename='js/carousel.js') }}"></script>

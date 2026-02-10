@@ -1,0 +1,113 @@
+{% include 'header.html' %}
+
+<!-- Hero Section with Social Links -->
+<section class="contact-hero">
+    <div class="container-fluid px-5">
+        <div class="row align-items-center justify-content-center min-vh-100">
+            <div class="col-lg-8 text-center">
+                <h1 class="hero-title mb-3">Let's Connect</h1>
+                <p class="subtitle mb-5">Follow me on social media or send me a message below</p>
+                
+                <!-- Social Media Buttons -->
+                <div class="social-buttons-container mb-5">
+                    <a href="https://www.linkedin.com/in/ifeanyi-henry-a5997632b" 
+                       class="social-btn linkedin-btn" 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       title="LinkedIn">
+                        <i class="fab fa-linkedin-in"></i>
+                        <span>LinkedIn</span>
+                    </a>
+                    <a href="https://x.com/Henray4real" 
+                       class="social-btn twitter-btn" 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       title="X (Twitter)">
+                        <i class="fab fa-twitter"></i>
+                        <span>X</span>
+                    </a>
+                    <a href="https://github.com/HenryIbeh999" 
+                       class="social-btn github-btn" 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       title="GitHub">
+                        <i class="fab fa-github"></i>
+                        <span>GitHub</span>
+                    </a>
+                </div>
+
+                <div class="divider-line mb-5"></div>
+                <p class="divider-text">Or fill out the form below</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Form Section -->
+<section class="contact-form-section py-5">
+    <div class="container-fluid px-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="form-container">
+                    <h2 class="form-title mb-4">Send Me a Message</h2>
+                    
+                    <form method="POST" class="contact-form", action="{{ url_for('contact')}}">
+                        {{ form.hidden_tag() }}
+                        
+                        <!-- Name Field -->
+                        <div class="form-group mb-4">
+                            {{ form.name.label(class="form-label") }}
+                            {% if form.name.errors %}
+                                {{ form.name(class="form-control form-control-error") }}
+                                <div class="error-message">
+                                    {% for error in form.name.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.name(class="form-control", placeholder="Your Name") }}
+                            {% endif %}
+                        </div>
+
+                        <!-- Email Field -->
+                        <div class="form-group mb-4">
+                            {{ form.email.label(class="form-label") }}
+                            {% if form.email.errors %}
+                                {{ form.email(class="form-control form-control-error") }}
+                                <div class="error-message">
+                                    {% for error in form.email.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.email(class="form-control", placeholder="your.email@example.com") }}
+                            {% endif %}
+                        </div>
+
+                        <!-- Message Field -->
+                        <div class="form-group mb-4">
+                            {{ form.message.label(class="form-label") }}
+                            {% if form.message.errors %}
+                                {{ form.message(class="form-control form-control-error", rows="5") }}
+                                <div class="error-message">
+                                    {% for error in form.message.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.message(class="form-control", rows="5", placeholder="Your message here...") }}
+                            {% endif %}
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="d-grid gap-2">
+                            {{ form.submit(class="btn btn-submit") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% include 'footer.html' %}
