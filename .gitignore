@@ -17,4 +17,7 @@ eggs/
 lib/
 lib64/
 idea/
+.build
+.cache
+node_modules
 
