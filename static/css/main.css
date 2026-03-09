@@ -416,6 +416,10 @@ body {
     transition: opacity var(--transition-fast) ease-in-out;
 }
 
+.carousel-item:first-child {
+    opacity: 1;
+}
+
 .carousel-item.active {
     opacity: 1;
 }

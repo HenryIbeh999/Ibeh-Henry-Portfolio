@@ -22,7 +22,6 @@ def home():
 
 def get_projects():
     try:
-        
         headers = {
             "Authorization": f"Bearer {os.getenv("STRAPI_API_TOKEN")}"
         }
@@ -30,21 +29,9 @@ def get_projects():
         response.raise_for_status()
         projects = response.json().get('data', [])
         
-
-        for project in projects:
-            if 'thumbnail' in project and isinstance(project['thumbnail'], list):
-                for image in project['thumbnail']:
-                    if 'url' in image and image['url'].startswith('/'):
-                        # Construct full URL from Strapi base
-                        strapi_base = STRAPI_URL.split('/api/')[0]
-                        image['url'] = strapi_base + image['url']
-                        print(f"DEBUG: Thumbnail URL updated to: {image['url']}")
-        
-        print(f"DEBUG: Total projects: {len(projects)}")
-        if projects:
-            print(f"DEBUG: First project thumbnails: {len(projects[0].get('thumbnail', []))}")
-            if projects[0].get('thumbnail'):
-                print(f"DEBUG: First image URL: {projects[0]['thumbnail'][0].get('url')}")
+        print(f"DEBUG: Fetched {len(projects)} project(s)")
+        if projects and projects[0].get('thumbnail'):
+            print(f"DEBUG: First project has {len(projects[0]['thumbnail'])} thumbnail(s)")
         
         return projects
     except requests.exceptions.RequestException as e:
@@ -54,6 +41,11 @@ def get_projects():
 @app.route('/projects')
 def projects():
     projects = get_projects()
+    print(f"DEBUG: Passing {len(projects)} projects to template")
+    if projects:
+        print(f"DEBUG: First project thumbnail count: {len(projects[0].get('thumbnail', []))}")
+        if projects[0].get('thumbnail'):
+            print(f"DEBUG: First thumbnail URL: {projects[0]['thumbnail'][0].get('url')}")
     return render_template("projects.html", projects=projects)
 
 @app.route('/contact',methods=["GET", "POST"])
