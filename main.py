@@ -3,7 +3,6 @@ from flask import Flask, render_template, redirect, url_for, flash, abort, reque
 import requests
 import os
 import time
-import time
 from dotenv import load_dotenv
 from form import ContactForm
 import smtplib
@@ -26,12 +25,6 @@ CACHE_TTL = 600
 
 
 
-
-PROJECT_CACHE = None
-CACHE_TIMESTAMP = 0
-CACHE_TTL = 600  
-
-
 @app.route('/')
 def home():
     return render_template("index.html")
@@ -52,10 +45,6 @@ def get_projects():
 
     now = time.time()
 
-    # Return cached data if still valid
-    if PROJECT_CACHE and (now - CACHE_TIMESTAMP < CACHE_TTL):
-        print("DEBUG: Returning cached projects")
-        return PROJECT_CACHE
 
     try:
         headers = {
@@ -80,23 +69,11 @@ def get_projects():
         print("DEBUG: Projects cached successfully")
 
 
-        # Save to cache
-        PROJECT_CACHE = projects
-        CACHE_TIMESTAMP = now
-
-        print("DEBUG: Projects cached successfully")
-
         return projects
 
 
     except requests.exceptions.RequestException as e:
         print(f"Error fetching projects: {e}")
-
-        # Fallback to cache if API fails
-        if PROJECT_CACHE:
-            print("DEBUG: Returning stale cache due to API failure")
-            return PROJECT_CACHE
-
 
         # Fallback to cache if API fails
         if PROJECT_CACHE:
@@ -134,7 +111,6 @@ def projects():
     return render_template("projects.html", projects=projects)
 
 
-@app.route('/contact', methods=["GET", "POST"])
 
 @app.route('/contact', methods=["GET", "POST"])
 def contact():
@@ -151,11 +127,6 @@ def contact():
 
 
             with smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=10) as connection:
-                connection.login(
-                    user=os.getenv("TO_EMAIL"),
-                    password=os.getenv("EMAIL_APP_PASSWORD")
-                )
-
                 connection.login(
                     user=os.getenv("TO_EMAIL"),
                     password=os.getenv("EMAIL_APP_PASSWORD")
@@ -188,9 +159,6 @@ def contact():
 
     return render_template("contact.html", form=form)
 
-    return render_template("contact.html", form=form)
-
-
 # -----------------------------
 # HEALTH ROUTE (for uptime monitoring)
 # -----------------------------
@@ -198,12 +166,6 @@ def contact():
 def health():
     return {"status": "ok", "service": "portfolio-api"}
 
-# -----------------------------
-# HEALTH ROUTE (for uptime monitoring)
-# -----------------------------
-@app.route('/health')
-def health():
-    return {"status": "ok", "service": "portfolio-api"}
 
 
 if __name__ == "__main__":
