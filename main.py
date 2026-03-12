@@ -41,7 +41,6 @@ def get_projects():
         print("DEBUG: Returning cached projects")
         return PROJECT_CACHE
 
-    global PROJECT_CACHE, CACHE_TIMESTAMP
 
     now = time.time()
 
