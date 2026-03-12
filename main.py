@@ -60,6 +60,7 @@ def get_projects():
     try:
         headers = {
             "Authorization": f"Bearer {os.getenv('STRAPI_API_TOKEN')}"
+            "Authorization": f"Bearer {os.getenv('STRAPI_API_TOKEN')}"
         }
 
 
