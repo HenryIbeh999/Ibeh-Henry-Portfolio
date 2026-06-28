@@ -212,8 +212,8 @@ a.btn-cta {
 
 /* Profile Image */
 .profile-image-container {
-    width: 300px;
-    height: 300px;
+    width: 350px;
+    height: 350px;
     border-radius: var(--radius-full);
     overflow: hidden;
     border: 8px solid #393a38;
