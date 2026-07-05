@@ -115,47 +115,6 @@ def projects():
 def contact():
     form = ContactForm()
 
-
-    if form.validate_on_submit():
-        form_name = form.name.data
-        form_email = form.email.data
-
-
-        try:
-            print(f"DEBUG: Form submitted with Name: {form_name}, Email: {form_email}, Message: {form.message.data}")
-
-
-            with smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=10) as connection:
-                connection.login(
-                    user=os.getenv("TO_EMAIL"),
-                    password=os.getenv("EMAIL_APP_PASSWORD")
-                )
-
-                msg = MIMEMultipart()
-                msg['From'] = os.getenv("TO_EMAIL")
-                msg['To'] = os.getenv("TO_EMAIL")
-                msg['Subject'] = f"Contact Form Submission from {form_name}"
-
-
-                body = f"Name: {form_name}\nEmail: {form_email}\n\nMessage:\n{form.message.data}"
-                msg.attach(MIMEText(body, 'plain'))
-
-
-                connection.sendmail(
-                    from_addr=os.getenv("TO_EMAIL"),
-                    to_addrs=os.getenv("TO_EMAIL"),
-                    msg=msg.as_string()
-                )
-
-
-            flash("Message sent successfully!", "success")
-            return redirect(url_for('home'))
-
-
-        except Exception as e:
-            print(f"An error occurred: {e}")
-            flash(f"Error sending message: {str(e)}", "error")
-
     return render_template("contact.html", form=form)
 
 # -----------------------------
