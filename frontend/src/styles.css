@@ -1,0 +1,104 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-win-close: var(--win-close);
+  --color-win-minimize: var(--win-minimize);
+  --color-win-maximize: var(--win-maximize);
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-sans: "JetBrains Mono", ui-monospace, monospace;
+}
+
+:root {
+  --radius: 0.25rem;
+  --background: oklch(0.13 0.004 260);
+  --foreground: oklch(0.97 0.005 260);
+  --surface: oklch(0.175 0.006 260);
+  --surface-2: oklch(0.225 0.008 260);
+  --card: oklch(0.175 0.006 260);
+  --card-foreground: oklch(0.97 0.005 260);
+  --popover: oklch(0.175 0.006 260);
+  --popover-foreground: oklch(0.97 0.005 260);
+  --primary: oklch(79.679% 0.23619 137.408);
+  --primary-foreground: oklch(0.13 0.004 260);
+  --secondary: oklch(0.225 0.008 260);
+  --secondary-foreground: oklch(0.97 0.005 260);
+  --muted: oklch(0.225 0.008 260);
+  --muted-foreground: oklch(0.68 0.01 260);
+  --accent: oklch(0.86 0.19 135);
+  --accent-foreground: oklch(0.13 0.004 260);
+  --destructive: oklch(0.65 0.22 25);
+  --border: oklch(0.30 0.01 260);
+  --input: oklch(0.30 0.01 260);
+  --ring: oklch(0.86 0.19 135);
+  /* Terminal window chrome. Desaturated from the macOS traffic lights so they
+     read as printed dots rather than glossy plastic — scoped to the portrait
+     card only, never used as UI accent. */
+  --win-close: oklch(0.62 0.19 25);
+  --win-minimize: oklch(0.75 0.14 82);
+  --win-maximize: oklch(0.68 0.15 145);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-mono);
+  }
+}
+
+/* Matte depth: linework, not light. The only texture in the system. */
+@utility grid-bg {
+  background-image:
+    linear-gradient(to right, oklch(1 0 0 / 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, oklch(1 0 0 / 0.035) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@utility animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+@utility animate-blink {
+  animation: blink 1s step-end infinite;
+}
