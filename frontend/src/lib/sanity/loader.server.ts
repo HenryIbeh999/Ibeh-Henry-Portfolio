@@ -18,4 +18,4 @@ const client = createClient({
 
 setServerClient(client)
 
-export { loadQuery }
+export { loadQuery, client }
