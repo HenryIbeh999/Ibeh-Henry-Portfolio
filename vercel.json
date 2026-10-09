@@ -3,7 +3,6 @@
   "services": {
     "frontend": {
       "root": "frontend",
-      "framework": "tanstack-start-lovable",
       "buildCommand": "npm run build"
     }
   },
