@@ -50,9 +50,7 @@ export function Timeline({ entries }: { entries: TimelineEntry[] }) {
       <div className="min-w-0">
         <div className="break-words text-sm font-semibold">{entry.title}</div>
         {entry.organization && (
-          <div className="break-words text-xs text-muted-foreground">
-            {entry.organization}
-          </div>
+          <div className="break-words text-xs text-muted-foreground">{entry.organization}</div>
         )}
       </div>
     </motion.li>
@@ -91,10 +89,7 @@ export function Timeline({ entries }: { entries: TimelineEntry[] }) {
           <ol className="space-y-5 p-6">{items}</ol>
         </div>
 
-        <span
-          aria-hidden
-          className="pointer-events-none absolute inset-x-6 top-0 h-px bg-border"
-        />
+        <span aria-hidden className="pointer-events-none absolute inset-x-6 top-0 h-px bg-border" />
         <span
           aria-hidden
           className="pointer-events-none absolute inset-x-6 bottom-0 h-px bg-border"

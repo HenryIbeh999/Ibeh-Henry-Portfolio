@@ -1,9 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import {
-  GLOBAL_SETTINGS_QUERY,
-  PROJECTS_QUERY,
-  PROJECT_QUERY,
-} from "./queries";
+import { GLOBAL_SETTINGS_QUERY, PROJECTS_QUERY, PROJECT_QUERY } from "./queries";
 
 export const getHomeData = createServerFn({ method: "GET" }).handler(async () => {
   const { client } = await import("./loader.server");

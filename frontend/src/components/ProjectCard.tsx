@@ -14,13 +14,7 @@ export type ProjectSummary = {
   gallery?: CarouselImage[];
 };
 
-export function ProjectCard({
-  project,
-  index,
-}: {
-  project: ProjectSummary;
-  index: number;
-}) {
+export function ProjectCard({ project, index }: { project: ProjectSummary; index: number }) {
   const accent = index === 0;
   const slug = stegaClean(project.slug?.current ?? "");
   const tags = project.techStack ?? [];
@@ -39,8 +33,8 @@ export function ProjectCard({
       <article
         className={`group relative flex h-full flex-col overflow-hidden rounded-xl border p-6 transition hover:-translate-y-1 ${
           accent
-              ? "border-border bg-surface-2 hover:bg-primary/[0.06]"
-              : "border-border bg-surface hover:bg-surface-2"
+            ? "border-border bg-surface-2 hover:bg-primary/[0.06]"
+            : "border-border bg-surface hover:bg-surface-2"
         }`}
       >
         <div className="pointer-events-none absolute inset-0 grid-bg opacity-20 transition group-hover:opacity-40" />
@@ -53,9 +47,7 @@ export function ProjectCard({
           <ArrowUpRight className="h-5 w-5 text-muted-foreground transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary" />
         </div>
 
-        <div className="relative mt-6 text-2xl font-extrabold tracking-tight">
-          {project.title}
-        </div>
+        <div className="relative mt-6 text-2xl font-extrabold tracking-tight">{project.title}</div>
 
         {media.length > 0 && (
           <div className="relative mt-4">

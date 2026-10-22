@@ -18,9 +18,7 @@ export function CardRail({ projects }: { projects: ProjectSummary[] }) {
     // keys to the browser instead of swallowing them.
     if (rail.scrollWidth <= rail.clientWidth + 1) return;
 
-    const items = Array.from(
-      rail.querySelectorAll<HTMLElement>("[data-rail-item]"),
-    );
+    const items = Array.from(rail.querySelectorAll<HTMLElement>("[data-rail-item]"));
     if (items.length === 0) return;
 
     const current = items.reduce(

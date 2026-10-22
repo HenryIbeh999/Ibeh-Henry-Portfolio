@@ -1,6 +1,14 @@
 import type { ReactNode } from "react";
 
-export function IconLink({ href, label, children }: { href: string; label: string; children: ReactNode }) {
+export function IconLink({
+  href,
+  label,
+  children,
+}: {
+  href: string;
+  label: string;
+  children: ReactNode;
+}) {
   return (
     <a
       href={href}

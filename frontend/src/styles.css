@@ -55,8 +55,8 @@
   --accent: oklch(0.86 0.19 135);
   --accent-foreground: oklch(0.13 0.004 260);
   --destructive: oklch(0.65 0.22 25);
-  --border: oklch(0.30 0.01 260);
-  --input: oklch(0.30 0.01 260);
+  --border: oklch(0.3 0.01 260);
+  --input: oklch(0.3 0.01 260);
   --ring: oklch(0.86 0.19 135);
   /* Terminal window chrome. Desaturated from the macOS traffic lights so they
      read as printed dots rather than glossy plastic — scoped to the portrait
@@ -89,15 +89,21 @@
 }
 
 @keyframes marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
 @utility animate-marquee {
   animation: marquee 30s linear infinite;
 }
 
 @keyframes blink {
-  50% { opacity: 0; }
+  50% {
+    opacity: 0;
+  }
 }
 @utility animate-blink {
   animation: blink 1s step-end infinite;
