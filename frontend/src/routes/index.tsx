@@ -316,7 +316,6 @@ function Index() {
 
         {/* TOOLBOX */}
         <SectionHeader id="stack" kicker="02 / the toolbox" title="What I reach for" />
-<<<<<<< HEAD
         <ToolboxPanel
           groups={
             stackCategories.length > 0
@@ -333,27 +332,6 @@ function Index() {
         {/* GIT FEED */}
         <SectionHeader id="activity" kicker="03 / git feed" title="Live from GitHub" />
         <GitHubFeed data={github} />
-=======
-        <section
-          className="grid gap-4"
-          style={{
-            gridTemplateColumns: `repeat(${Math.min(stackCategories.length || 1, 3)}, minmax(0, 1fr))`,
-          }}
-        >
-          {stackCategories.map((cat, i) => {
-            const Icon = STACK_ICONS[cat.icon ?? ""] ?? Wrench;
-            return (
-              <StackCard
-                key={cat._key ?? i}
-                icon={<Icon className="h-5 w-5" />}
-                title={cat.title ?? ""}
-                items={cat.items ?? []}
-                highlight={cat.highlight}
-              />
-            );
-          })}
-        </section>
->>>>>>> bc6b5b751e927ebbad5d8c1a57b83095d9943a5c
 
         {/* ABOUT + EXPERIENCE */}
         <SectionHeader id="about" kicker="04 / exp" title="My journey so far" />
