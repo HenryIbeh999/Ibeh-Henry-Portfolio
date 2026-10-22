@@ -2,8 +2,16 @@ import { motion } from "motion/react";
 import type { ReactNode } from "react";
 
 export function StackCard({
-  icon, title, items, highlight,
-}: { icon: ReactNode; title: string; items: string[]; highlight?: boolean }) {
+  icon,
+  title,
+  items,
+  highlight,
+}: {
+  icon: ReactNode;
+  title: string;
+  items: string[];
+  highlight?: boolean;
+}) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -13,7 +21,9 @@ export function StackCard({
       className={`rounded-xl border p-5 ${highlight ? "border-border bg-surface-2" : "border-border bg-surface"}`}
     >
       <div className="flex items-center gap-2">
-        <div className={`grid h-8 w-8 place-items-center rounded-md ${highlight ? "bg-primary text-primary-foreground" : "border border-border text-primary"}`}>
+        <div
+          className={`grid h-8 w-8 place-items-center rounded-md ${highlight ? "bg-primary text-primary-foreground" : "border border-border text-primary"}`}
+        >
           {icon}
         </div>
         <div className="text-sm font-bold uppercase tracking-widest">{title}</div>

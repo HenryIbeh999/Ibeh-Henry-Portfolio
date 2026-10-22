@@ -81,21 +81,24 @@ const STACK_ICONS: Record<string, React.ComponentType<{ className?: string }>> =
 };
 
 const FALLBACK_STACK = [
-  "Python", "JavaScript", "C#", "FASTAPI", "React", "Flask",
-  "MySQL", "TypeScript", "Git"
+  "Python",
+  "JavaScript",
+  "C#",
+  "FASTAPI",
+  "React",
+  "Flask",
+  "MySQL",
+  "TypeScript",
+  "Git",
 ];
 
 const taglineComponents = {
-  block: ({ children }: { children?: ReactNode }) => (
-    <span className="inline">{children}</span>
-  ),
+  block: ({ children }: { children?: ReactNode }) => <span className="inline">{children}</span>,
   marks: {
     strong: ({ children }: { children?: ReactNode }) => (
       <span className="text-primary">{children}</span>
     ),
-    em: ({ children }: { children?: ReactNode }) => (
-      <span className="italic">{children}</span>
-    ),
+    em: ({ children }: { children?: ReactNode }) => <span className="italic">{children}</span>,
   },
 } satisfies PortableTextComponents;
 
@@ -128,9 +131,7 @@ function Index() {
   const marquee = stackCategories.flatMap((cat) => cat.items ?? []);
   const marqueeItems = marquee.length > 0 ? marquee : FALLBACK_STACK;
 
-  const headingParts = contact?.heading
-    ? splitTrailingSentence(contact.heading)
-    : null;
+  const headingParts = contact?.heading ? splitTrailingSentence(contact.heading) : null;
 
   return (
     <div id="home" className="relative min-h-screen">
@@ -167,9 +168,7 @@ function Index() {
 
               <h1 className="text-4xl font-extrabold leading-[1.05] tracking-tight md:text-6xl lg:text-7xl">
                 <Reveal delay={0.05}>
-                  <span className="text-foreground">
-                    I&apos;m {hero?.name ?? "Ibeh Henry"}.
-                  </span>
+                  <span className="text-foreground">I&apos;m {hero?.name ?? "Ibeh Henry"}.</span>
                 </Reveal>
                 {hero?.tagline && hero.tagline.length > 0 ? (
                   <Reveal delay={0.15}>
@@ -180,8 +179,7 @@ function Index() {
                 ) : (
                   <Reveal delay={0.15}>
                     <span className="text-muted-foreground">
-                      I build{" "}
-                      <span className="text-primary">systems</span>
+                      I build <span className="text-primary">systems</span>
                       <span className="text-muted-foreground">,</span>{" "}
                       <span className="text-muted-foreground">apps &amp; </span>
                       <span className="text-primary">games</span>
@@ -223,13 +221,19 @@ function Index() {
                 </a>
                 <div className="ml-1 flex items-center gap-3 text-muted-foreground">
                   {social?.github && (
-                    <IconLink href={social.github} label="GitHub"><Github className="h-4 w-4" /></IconLink>
+                    <IconLink href={social.github} label="GitHub">
+                      <Github className="h-4 w-4" />
+                    </IconLink>
                   )}
                   {social?.linkedin && (
-                    <IconLink href={social.linkedin} label="LinkedIn"><Linkedin className="h-4 w-4" /></IconLink>
+                    <IconLink href={social.linkedin} label="LinkedIn">
+                      <Linkedin className="h-4 w-4" />
+                    </IconLink>
                   )}
                   {social?.twitter && (
-                    <IconLink href={social.twitter} label="Twitter"><Twitter className="h-4 w-4" /></IconLink>
+                    <IconLink href={social.twitter} label="Twitter">
+                      <Twitter className="h-4 w-4" />
+                    </IconLink>
                   )}
                 </div>
               </motion.div>
@@ -238,10 +242,16 @@ function Index() {
               {stats.length > 0 && (
                 <div
                   className="mt-10 grid max-w-lg divide-x divide-border rounded-lg border border-border bg-surface"
-                  style={{ gridTemplateColumns: `repeat(${Math.min(stats.length, 4)}, minmax(0, 1fr))` }}
+                  style={{
+                    gridTemplateColumns: `repeat(${Math.min(stats.length, 4)}, minmax(0, 1fr))`,
+                  }}
                 >
                   {stats.map((stat, i) => (
-                    <Stat key={stat._key ?? i} k={stat.value ?? ""} v={(stat.label ?? "").toLowerCase()} />
+                    <Stat
+                      key={stat._key ?? i}
+                      k={stat.value ?? ""}
+                      v={(stat.label ?? "").toLowerCase()}
+                    />
                   ))}
                 </div>
               )}
@@ -257,9 +267,9 @@ function Index() {
               <div className="relative rounded-2xl border border-border bg-surface p-4">
                 <div className="flex items-center justify-between text-[10px] text-muted-foreground">
                   <span className="flex items-center gap-1.5">
-                      <span className="h-2 w-2 rounded-full bg-win-close" />
-                      <span className="h-2 w-2 rounded-full bg-win-minimize" />
-                      <span className="h-2 w-2 rounded-full bg-win-maximize" />
+                    <span className="h-2 w-2 rounded-full bg-win-close" />
+                    <span className="h-2 w-2 rounded-full bg-win-minimize" />
+                    <span className="h-2 w-2 rounded-full bg-win-maximize" />
                   </span>
                   <span>~/ibeh — zsh</span>
                 </div>
@@ -267,14 +277,20 @@ function Index() {
                   <div className="grid h-full place-items-center text-center">
                     <div>
                       <div className="text-7xl font-extrabold text-primary">IH</div>
-                      <div className="mt-2 text-xs tracking-[0.3em] text-muted-foreground">IBEH · HENRY</div>
+                      <div className="mt-2 text-xs tracking-[0.3em] text-muted-foreground">
+                        IBEH · HENRY
+                      </div>
                     </div>
                   </div>
                 </div>
                 <div className="mt-4 space-y-1 font-mono text-[11px] leading-relaxed text-muted-foreground">
-                  <div><span className="text-primary">$</span> whoami</div>
+                  <div>
+                    <span className="text-primary">$</span> whoami
+                  </div>
                   <div className="pl-2 text-foreground">ibeh_henry</div>
-                  <div><span className="text-primary">$</span> cat role.txt</div>
+                  <div>
+                    <span className="text-primary">$</span> cat role.txt
+                  </div>
                   <div className="pl-2 text-foreground">
                     software engineer<span className="animate-blink text-primary">▍</span>
                   </div>
@@ -310,7 +326,9 @@ function Index() {
         <SectionHeader id="stack" kicker="02 / the toolbox" title="What I reach for" />
         <section
           className="grid gap-4"
-          style={{ gridTemplateColumns: `repeat(${Math.min(stackCategories.length || 1, 3)}, minmax(0, 1fr))` }}
+          style={{
+            gridTemplateColumns: `repeat(${Math.min(stackCategories.length || 1, 3)}, minmax(0, 1fr))`,
+          }}
         >
           {stackCategories.map((cat, i) => {
             const Icon = STACK_ICONS[cat.icon ?? ""] ?? Wrench;
@@ -336,19 +354,29 @@ function Index() {
             <div className="absolute inset-0 grid-bg opacity-30" />
             {/* Registration marks replace the old blurred glow orb — sharp linework,
                 same depth cue, no light. */}
-            <span aria-hidden className="pointer-events-none absolute left-5 top-5 h-3 w-3 border-l border-t border-primary/50" />
-            <span aria-hidden className="pointer-events-none absolute right-5 top-5 h-3 w-3 border-r border-t border-primary/50" />
-            <span aria-hidden className="pointer-events-none absolute bottom-5 left-5 h-3 w-3 border-b border-l border-primary/50" />
-            <span aria-hidden className="pointer-events-none absolute bottom-5 right-5 h-3 w-3 border-b border-r border-primary/50" />
+            <span
+              aria-hidden
+              className="pointer-events-none absolute left-5 top-5 h-3 w-3 border-l border-t border-primary/50"
+            />
+            <span
+              aria-hidden
+              className="pointer-events-none absolute right-5 top-5 h-3 w-3 border-r border-t border-primary/50"
+            />
+            <span
+              aria-hidden
+              className="pointer-events-none absolute bottom-5 left-5 h-3 w-3 border-b border-l border-primary/50"
+            />
+            <span
+              aria-hidden
+              className="pointer-events-none absolute bottom-5 right-5 h-3 w-3 border-b border-r border-primary/50"
+            />
             <div className="relative">
               <div className="text-xs uppercase tracking-[0.3em] text-primary">04 / say hi</div>
               <h2 className="mt-3 max-w-2xl text-3xl font-extrabold leading-tight md:text-5xl">
                 {headingParts ? (
                   <>
                     {headingParts[0]}{" "}
-                    {headingParts[1] && (
-                      <span className="text-primary">{headingParts[1]}</span>
-                    )}
+                    {headingParts[1] && <span className="text-primary">{headingParts[1]}</span>}
                   </>
                 ) : (
                   <>
@@ -358,9 +386,7 @@ function Index() {
                 )}
               </h2>
               {contact?.subtext && (
-                <p className="mt-4 max-w-xl text-sm text-muted-foreground">
-                  {contact.subtext}
-                </p>
+                <p className="mt-4 max-w-xl text-sm text-muted-foreground">{contact.subtext}</p>
               )}
               <div className="mt-8 flex flex-wrap gap-3">
                 {contact?.email && (
