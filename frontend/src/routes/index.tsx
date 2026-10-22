@@ -9,23 +9,21 @@ import {
   Twitter,
   ArrowUpRight,
   Terminal,
-  Cpu,
-  Gamepad2,
-  Code2,
   Mail,
   MapPin,
-  Wrench,
 } from "lucide-react";
 import { getHomeData } from "@/lib/sanity/api";
+import { getGitHubActivity, type GitHubResult } from "@/lib/github";
 import { CardRail } from "@/components/CardRail";
 import type { ProjectSummary } from "@/components/ProjectCard";
+import { GitHubFeed } from "@/components/GitHubFeed";
 import { IconLink } from "@/components/IconLink";
 import { Nav } from "@/components/Nav";
 import { Reveal } from "@/components/Reveal";
 import { SectionHeader } from "@/components/SectionHeader";
-import { StackCard } from "@/components/StackCard";
 import { Stat } from "@/components/Stat";
 import { Timeline, type TimelineEntry } from "@/components/Timeline";
+import { ToolboxPanel } from "@/components/ToolboxPanel";
 
 type HeroStat = { _key?: string; label?: string; value?: string };
 type StackCategory = {
@@ -65,20 +63,14 @@ type GlobalSettings = {
 export const Route = createFileRoute("/")({
   component: Index,
   loader: async () => {
-    const data = await getHomeData();
+    const [data, github] = await Promise.all([getHomeData(), getGitHubActivity()]);
     return {
       projects: (data.projects ?? []) as ProjectSummary[],
       globalSettings: (data.globalSettings ?? null) as GlobalSettings | null,
+      github: github as GitHubResult,
     };
   },
 });
-
-const STACK_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
-  Cpu,
-  Code2,
-  Gamepad2,
-  Wrench,
-};
 
 const FALLBACK_STACK = [
   "Python", "JavaScript", "C#", "FASTAPI", "React", "Flask",
@@ -112,7 +104,7 @@ function splitTrailingSentence(text: string): [string, string | null] {
 }
 
 function Index() {
-  const { projects, globalSettings } = Route.useLoaderData();
+  const { projects, globalSettings, github } = Route.useLoaderData();
   const mounted = useMounted();
   const { scrollYProgress } = useScroll();
   const barWidth = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
@@ -306,28 +298,27 @@ function Index() {
         <SectionHeader id="work" kicker="01 / selected work" title="Things I've built" />
         <CardRail projects={projects} />
 
-        {/* STACK */}
+        {/* TOOLBOX */}
         <SectionHeader id="stack" kicker="02 / the toolbox" title="What I reach for" />
-        <section
-          className="grid gap-4"
-          style={{ gridTemplateColumns: `repeat(${Math.min(stackCategories.length || 1, 3)}, minmax(0, 1fr))` }}
-        >
-          {stackCategories.map((cat, i) => {
-            const Icon = STACK_ICONS[cat.icon ?? ""] ?? Wrench;
-            return (
-              <StackCard
-                key={cat._key ?? i}
-                icon={<Icon className="h-5 w-5" />}
-                title={cat.title ?? ""}
-                items={cat.items ?? []}
-                highlight={cat.highlight}
-              />
-            );
-          })}
-        </section>
+        <ToolboxPanel
+          groups={
+            stackCategories.length > 0
+              ? stackCategories.map((cat) => ({
+                  title: cat.title ?? "",
+                  icon: cat.icon,
+                  highlight: cat.highlight,
+                  items: cat.items ?? [],
+                }))
+              : [{ title: "Stack", items: FALLBACK_STACK }]
+          }
+        />
+
+        {/* GIT FEED */}
+        <SectionHeader id="activity" kicker="03 / git feed" title="Live from GitHub" />
+        <GitHubFeed data={github} />
 
         {/* ABOUT + EXPERIENCE */}
-        <SectionHeader id="about" kicker="03 / EXP" title="My journey so far" />
+        <SectionHeader id="about" kicker="04 / exp" title="My journey so far" />
         <Timeline entries={experience} />
 
         {/* CONTACT */}
@@ -341,7 +332,7 @@ function Index() {
             <span aria-hidden className="pointer-events-none absolute bottom-5 left-5 h-3 w-3 border-b border-l border-primary/50" />
             <span aria-hidden className="pointer-events-none absolute bottom-5 right-5 h-3 w-3 border-b border-r border-primary/50" />
             <div className="relative">
-              <div className="text-xs uppercase tracking-[0.3em] text-primary">04 / say hi</div>
+              <div className="text-xs uppercase tracking-[0.3em] text-primary">05 / say hi</div>
               <h2 className="mt-3 max-w-2xl text-3xl font-extrabold leading-tight md:text-5xl">
                 {headingParts ? (
                   <>

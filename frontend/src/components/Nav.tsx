@@ -2,6 +2,7 @@ const NAV = [
   { label: "Home", href: "#home" },
   { label: "Work", href: "#work" },
   { label: "Stack", href: "#stack" },
+  { label: "Activity", href: "#activity" },
   { label: "About", href: "#about" },
   { label: "Contact", href: "#contact" },
 ];

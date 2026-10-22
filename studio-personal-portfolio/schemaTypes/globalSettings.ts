@@ -135,15 +135,16 @@ export const globalSettings = defineType({
         type: 'object',
         fields: [
           defineField({ name: 'title', title: 'Title', type: 'string' }),
-          defineField({ name: 'icon', title: 'Icon Name', type: 'string', description: 'Lucide icon name (e.g., Cpu, Code2, Gamepad2)' }),
-          defineField({ name: 'highlight', title: 'Highlight', type: 'boolean', initialValue: false }),
-          defineField({ name: 'items', title: 'Items', type: 'array', of: [defineArrayMember({ type: 'string' })] }),
+          defineField({ name: 'icon', title: 'Icon Name', type: 'string', description: 'Lucide icon name (Cpu, Code2, Database, Wrench)' }),
+          defineField({ name: 'highlight', title: 'Highlight', type: 'boolean', initialValue: false, description: 'The group leaned on most — its label reads at full contrast' }),
+          defineField({ name: 'items', title: 'Items', type: 'array', of: [defineArrayMember({ type: 'string' })], description: 'Tool names. A vendor mark is shown when the name is recognised; unknown names still render as text.' }),
         ],
       })],
       initialValue: [
-        { title: 'Systems', icon: 'Cpu', highlight: false, items: ['Rust', 'C / C++', 'Go', 'Linux internals', 'Networking'] },
-        { title: 'Apps', icon: 'Code2', highlight: true, items: ['TypeScript', 'React', 'Node.js', 'Postgres', 'Tauri'] },
-        { title: 'Games & Scripts', icon: 'Gamepad2', highlight: false, items: ['Godot', 'Python', 'Bash', 'Shaders', 'Automation'] },
+        { title: 'Languages', icon: 'Cpu', highlight: false, items: ['Python', 'JavaScript', 'TypeScript', 'C#', 'CSS', 'Sass'] },
+        { title: 'Frameworks', icon: 'Code2', highlight: true, items: ['Django', 'Flask', 'FastAPI', 'React', 'Next.js', 'Unity'] },
+        { title: 'Data', icon: 'Database', highlight: false, items: ['PostgreSQL', 'MySQL', 'SQLite', 'Redis', 'Pandas', 'NumPy', 'Matplotlib'] },
+        { title: 'Tooling', icon: 'Wrench', highlight: false, items: ['Docker', 'Git', 'Ollama', 'Tailwind', 'Sanity', 'Jupyter'] },
       ],
     }),
     defineField({

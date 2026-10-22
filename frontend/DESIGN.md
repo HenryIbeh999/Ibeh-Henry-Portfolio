@@ -63,8 +63,33 @@ design, and no gradient, blur, or glow is permitted anywhere in the UI.
 - **No gradients, box-shadows, text-shadows, or backdrop blur** on any surface.
   The only permitted shadow-class artefact is a focus indicator, and those are
   `outline-*` (a real outline), never `ring-*` (which is box-shadow).
-- Extend this table before introducing a colour. There are no raw hex values in the
-  codebase and none may be added.
+- Extend this table before introducing a colour. There are no raw hex values in
+  the codebase and none may be added.
+
+### Vendor ink — the one sanctioned exception to "no colour"
+
+The toolbox and the GitHub feed show marks in the colours their owners print
+them in: Python blue, Docker blue, PostgreSQL blue, the Linguist colours of the
+languages a repository actually contains. This is **data, not chrome** — the
+colour identifies the thing, the way a badge of a component identifies the
+component, and removing it would make the page less informative, not more
+beautiful.
+
+Rules that keep this from tipping into decoration:
+
+- Vendor ink appears **only inside a vendor mark** — a logo glyph or a language
+  swatch. It never becomes a border, a background wash, a label colour, or a
+  section accent.
+- Vendor ink lives in exactly two places: `src/lib/tech-icons.ts` (the mark
+  paths and their brand hexes) and `src/lib/ink.ts` (the lightness rule). No
+  other file may carry a brand hex.
+- Brand hexes are lifted, never replaced. `readableInk()` keeps the hue and
+  raises lightness to a floor of 62% so a mark reads on the near-black ground;
+  black-branded logos (Flask, Ollama, Next.js) invert to a light neutral because
+  there is no hue to preserve. Nothing is re-coloured to a different brand.
+- Every mark is paired with its name in text, so nothing is communicated by
+  colour alone.
+
 
 ### The two surviving gradients (deliberate)
 Both are **masks that prevent a visual defect**, not decoration, and neither
@@ -163,12 +188,56 @@ Primitives extracted from `src/routes/index.tsx` into `src/components/`.
   selected/active marker.
 - **Accessibility**: `aria-label` carries the network name; icon is decorative.
 
-### StackCard
-- **Structure**: 8×8 icon well + uppercase title, then a `›` list.
-- **Variants**: `highlight` — icon well filled with accent, raised surface. **Encoded
-  by elevation and fill, not by a coloured border.**
-- **States**: default, hover (lift `-translate-y-1` + glow).
-- **Motion**: `whileInView` y 20→0, `viewport once`.
+### WindowFrame
+- **Structure**: panel chrome borrowed from the hero portrait card — a title bar
+  carrying the three inert `--win-*` dots, a path (`~/toolbox`, `~/github/HenryIbeh999`)
+  and an optional right-aligned meta slot, over a `--surface` body.
+- **Usage**: every instrument panel on the page. The path is the panel's
+  identity, so it always names the thing being shown, never the component.
+- **States**: static. The dots are decoration borrowed from an established
+  motif; they encode nothing.
+
+### TechMark
+- **Structure**: an inline SVG of the vendor's mark, 18px, filled with
+  `readableInk(brandHex)`.
+- **Accessibility**: `aria-hidden`. The tool's name always sits beside the mark
+  in text, so the legend is readable without the glyph.
+- **Fallback**: an unrecognised tool name renders no mark and leaves the name
+  as plain text. The legend never breaks because content outruns the icon set.
+
+### ToolboxPanel
+- **Structure**: a `WindowFrame` holding one group per stack category. Each
+  group is a labelled strip — category icon, uppercase label, a hairline that
+  fills the width — then a grid of tool sockets.
+- **The socket**: a recessed hairline frame on `--background` (one tone below
+  the panel) holding the vendor mark and the tool name. Hover raises it to
+  `--surface-2` and brings the name to full contrast. Tone step, never a
+  coloured border.
+- **Layout**: `grid-cols-[repeat(auto-fit,minmax(9rem,1fr))]`. Groups hold
+  different counts of tools, so the track count is intrinsic: a six-tool group
+  lays out six wide sockets, a seven-tool group seven, and no group is ever left
+  with an orphan on its own row.
+- **Highlight**: the `highlight` flag from Sanity lifts one group's label from
+  `--muted-foreground` to `--foreground`. Elevation by tone, not by accent.
+- **Motion**: none. The logos are the event; the frame stays still.
+
+### GitHubFeed
+- **Structure**: a `WindowFrame` over the public GitHub API — four live counters
+  in a divided strip, then a two-column body: languages and repositories on the
+  left, recent commits on the right.
+- **The language ledger**: a 2px stacked bar of repository bytes per language,
+  each segment in its Linguist colour, over a legend that names every language
+  and its share. The bar carries an `aria-label` with the same numbers in words.
+- **The commit log**: sha, message, repository and timestamp per row, in the
+  order GitHub returns them. The sha is the only accented element in the
+  column — it is the reference a reader might copy.
+- **Honesty**: the counters are what the API returns. GitHub's `Profile` and
+  `Procfile` pseudo-languages are excluded from the ledger and from its
+  denominator.
+- **States**: success, and failure. When the API refuses — rate limited, or
+  offline — the panel says what happened and points at the profile instead of
+  showing an empty shell.
+- **Motion**: none. The data is live; the panel does not need to animate.
 
 ### ProjectCard
 - **Structure**: index · tech meta row, title, media slot, chip row. Whole card is one
@@ -320,3 +389,21 @@ enough to read as distinct planes on their own, and elevation is expressed by
 | Carousel has no autoplay | `ImageCarousel` | A project image that moves on its own fights the card's own hover affordance and steals attention from the link | Closed — deliberate, opt-in via prop if ever wanted |
 | Timeline scroll variant hides overflow behind edge fades with no visible scrollbar on some platforms | `Timeline` | Native overlay scrollbars are inconsistent; focus + arrow keys provide the access path | Revisit if the timeline grows past ~8 entries |
 | Single dark theme; no light mode | Global | The terminal identity is the product; a light variant is not requested | Revisit only on explicit request |
+| `StackCard` removed; the toolbox is now `ToolboxPanel` | `src/components` | A list of `›`-prefixed tool names was the one place the page described a tool without showing it. The legend of vendor marks replaces it and the file is deleted rather than left as dead code | Closed — replaced |
+| The toolbox grid is intrinsic (`auto-fit`), so socket widths differ between groups | `ToolboxPanel` | Groups hold different numbers of tools. A fixed column count leaves orphans on their own row; letting the track count follow the content keeps every row full. Uniform socket widths were the smaller loss | Revisit if the tool list is ever fixed at one count per group |
+
+## 9. Live Data
+
+The GitHub panel is the only part of the page that reads a third-party API.
+
+| Concern | Decision |
+|---|---|
+| Where it runs | Server only. `getGitHubActivity` is a TanStack Start server function; `src/lib/github.server.ts` is imported dynamically inside the handler so it never reaches the client bundle |
+| What it reads | The public API: profile, repositories, the commit search count, per-repo language byte counts, and recent commits from the two most recently pushed repositories. Language bytes come from the per-repository `/languages` endpoint, the same measure GitHub's own language bar uses — repository size is not a substitute for it |
+| Caching | 30 minutes, in module scope on the server. One page load costs about eleven requests, and the unauthenticated public API allows 60 an hour for a single IP |
+| Request budget | The process spends at most 40 requests an hour without a token, then stops asking and serves the last good payload. With a token the ceiling is the API's own and the budget never binds |
+| Stale fallback | If a refresh fails but a previous payload exists, the stale payload is served. A slightly old number beats an error, and the panel says when it last synced |
+| Auth | Optional, and recommended in production. `GITHUB_TOKEN` in the server environment raises the limit from 60 requests an hour to 5,000. Nothing in the client needs it, and the panel works without it |
+| Failure copy | The panel states that GitHub did not answer and why, then links to the profile. It never renders an empty shell |
+| Trust | Every number in the panel is what the API returned. Nothing is rounded for effect, and the pseudo-languages GitHub counts (`Profile`, `Procfile`) are excluded from the ledger and its denominator |
+
