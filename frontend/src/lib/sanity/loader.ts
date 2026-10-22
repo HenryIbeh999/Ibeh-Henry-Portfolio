@@ -1,8 +1,6 @@
-import { createQueryStore } from '@sanity/react-loader'
+import { createQueryStore } from "@sanity/react-loader";
 
-export const {
-  loadQuery,
-  setServerClient,
-  useQuery,
-  useLiveMode,
-} = createQueryStore({ client: false, ssr: true })
+export const { loadQuery, setServerClient, useQuery, useLiveMode } = createQueryStore({
+  client: false,
+  ssr: true,
+});

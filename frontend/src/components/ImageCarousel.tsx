@@ -27,16 +27,9 @@ const GLIDE_SPRING = { stiffness: 40, damping: 20, mass: 3 };
 const FLICK_MOMENTUM = 0.45;
 const MAX_FLICK_SLIDES = 6;
 
-const frameUrl = (image: CarouselImage) =>
-  urlFor(image).width(800).height(450).fit("crop").url();
+const frameUrl = (image: CarouselImage) => urlFor(image).width(800).height(450).fit("crop").url();
 
-export function ImageCarousel({
-  images,
-  label,
-}: {
-  images: CarouselImage[];
-  label: string;
-}) {
+export function ImageCarousel({ images, label }: { images: CarouselImage[]; label: string }) {
   const reduce = useReducedMotion() ?? false;
   const count = images.length;
   const multi = count > 1;
@@ -67,10 +60,7 @@ export function ImageCarousel({
   // template string on `transform` — handing a MotionValue<string> to the numeric
   // `x` prop makes Motion re-wrap it into `translateX(translateX(...))`, which the
   // browser discards, and the track silently never moves.
-  const slidePercent = useTransform(
-    x,
-    (v) => (v * -100) / Math.max(count, 1),
-  );
+  const slidePercent = useTransform(x, (v) => (v * -100) / Math.max(count, 1));
   const transform = useMotionTemplate`translateX(${slidePercent}%)`;
 
   const stopGlide = useCallback(() => {
@@ -123,10 +113,7 @@ export function ImageCarousel({
     (velocity: number) => {
       const projected =
         x.get() +
-        Math.max(
-          -MAX_FLICK_SLIDES,
-          Math.min(MAX_FLICK_SLIDES, velocity * FLICK_MOMENTUM),
-        );
+        Math.max(-MAX_FLICK_SLIDES, Math.min(MAX_FLICK_SLIDES, velocity * FLICK_MOMENTUM));
       glideTo(Math.round(projected), velocity);
     },
     [glideTo, x],
@@ -211,12 +198,7 @@ export function ImageCarousel({
   }
 
   return (
-    <div
-      className="relative"
-      role="group"
-      aria-roledescription="carousel"
-      aria-label={label}
-    >
+    <div className="relative" role="group" aria-roledescription="carousel" aria-label={label}>
       <div
         ref={frameRef}
         tabIndex={0}
@@ -227,19 +209,12 @@ export function ImageCarousel({
         onPointerCancel={onPointerUp}
         className="relative aspect-video cursor-grab touch-pan-y overscroll-x-contain select-none overflow-hidden rounded-lg border border-border active:cursor-grabbing focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
       >
-        <motion.div
-          className="flex h-full"
-          style={{ transform, width: `${count * 100}%` }}
-        >
+        <motion.div className="flex h-full" style={{ transform, width: `${count * 100}%` }}>
           {images.map((image, i) => (
             // `flex-1`, not `w-full`: a percentage width here resolves against the track,
-// which is already `count` frames wide, so `w-full` stretches every image across
-// the whole carousel and the frame clips it to one slice.
-<div
-              key={i}
-              className="h-full min-w-0 flex-1"
-              aria-hidden={i !== index}
-            >
+            // which is already `count` frames wide, so `w-full` stretches every image across
+            // the whole carousel and the frame clips it to one slice.
+            <div key={i} className="h-full min-w-0 flex-1" aria-hidden={i !== index}>
               <img
                 src={frameUrl(image)}
                 alt={image.alt ?? label}

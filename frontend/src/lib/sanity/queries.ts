@@ -1,4 +1,4 @@
-import { defineQuery } from 'groq'
+import { defineQuery } from "groq";
 
 export const PROJECTS_QUERY = defineQuery(
   `*[_type == "project" && defined(slug.current)] | order(dataAdded desc){
@@ -9,8 +9,8 @@ export const PROJECTS_QUERY = defineQuery(
     githubUrl,
     dataAdded,
     gallery
-  }`
-)
+  }`,
+);
 
 export const PROJECT_QUERY = defineQuery(
   `*[_type == "project" && slug.current == $slug][0]{
@@ -22,8 +22,8 @@ export const PROJECT_QUERY = defineQuery(
     githubUrl,
     dataAdded,
     gallery
-  }`
-)
+  }`,
+);
 
 export const GLOBAL_SETTINGS_QUERY = defineQuery(
   `*[_type == "globalSettings"][0]{
@@ -35,5 +35,5 @@ export const GLOBAL_SETTINGS_QUERY = defineQuery(
     stackCategories,
     experience,
     contact
-  }`
-)
+  }`,
+);
